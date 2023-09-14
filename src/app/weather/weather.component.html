@@ -1,1 +1,39 @@
 <p>weather works!</p>
+searchCountryLocation
+
+<form class="form-inline my-2 my-lg-0">
+    <input class="form-control mr-sm-2" 
+        name="search"
+    [(ngModel)]="searchCountry"
+    type="text" placeholder="Search">
+    <button class="btn btn-success my-2 my-sm-0" type="button"
+    (click)="searchCountryByName()"
+    >Search</button>
+  </form>
+  <!-- {{searchCountry}} -->
+  <b>
+      find weather
+  </b>
+  khjjj
+  <p><span class="ico-01d" title="01d"></span></p>
+  <div *ngFor="let x of searchHistory">
+      <button class="btn btn-info" (click)="fetchWeatherHistoryOfFiveDays(x)">
+          <p><span [class]="'ico-'+x.weather[0].icon" [title]="x.weather[0].icon"></span></p>
+          
+          {{ x.name }}
+          <img [src]="'http://openweathermap.org/img/w/'+x.weather[0].icon+'.png'" alt="">
+         {{ wetherOfCountryData?.calculatedCelcius  | number:'1.0-1'  }}°C
+    </button>
+  </div>
+
+
+
+  upcoming  forcast
+<ng-container *ngIf="fiveDaysResponse">
+
+    <div *ngFor="let x of fiveDaysResponse.daily">
+      <img [src]="'http://openweathermap.org/img/w/'+x.weather[0].icon+'.png'" alt="">
+      {{ x.convertedDate }}
+  
+    </div>
+</ng-container>
