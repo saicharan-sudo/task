@@ -21,10 +21,18 @@ export class CounterComponent implements OnInit {
     this.sendData();
   }
   incrementCounter(index: number) {
-    this.counterList[index].count++;
+    if (this.counterList[index].count >= 0) {
+      this.counterList[index].count++;
+    } else {
+      this.counterList[index].count = 0;
+    }
   }
   decrementCounter(index: number) {
-    this.counterList[index].count--;
+    if (this.counterList[index].count > 0) {
+      this.counterList[index].count--;
+    }else{
+      this.counterList[index].count = 0;
+    }
   }
   deleteCounter(index: number) {
     this.counterList.splice(index, 1);

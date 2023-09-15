@@ -1,23 +1,25 @@
-<button class="btn btn-primary" (click)="resetButton()">Reset</button>
-<button class="btn btn-primary" (click)="add()">
-    Add
-</button>
-<div *ngFor="let x of counterList;let i =index" class="my-3 ">
-    <div class="d-flex gap-3 ">
-        <!-- justify-content-betweeen -->
-        <div class="bg-primary text-white" style="width: 30px;">
-            {{ x.count }}
-        </div>
-        <div>
-            <button class="btn btn-secondary mx-3" (click)="incrementCounter(i)">
-                Increment
-            </button>
-            <button class="btn btn-secondary mx-3" (click)="decrementCounter(i)">
-                Decrement
-            </button>
-            <button class="btn btn-secondary mx-3" (click)="deleteCounter(i)">
-                Delete
-            </button>
+<div class="container-fluid">
+    <button class="btn btn-primary mr-3" (click)="resetButton()">Reset</button>
+    <button class="btn btn-primary " (click)="add()">
+        Add
+    </button>
+    <div *ngFor="let x of counterList;let i =index" class="my-3 ">
+        <div class="d-flex gap-3 ">
+            <!-- justify-content-betweeen -->
+            <div class="bg-primary text-white text-center my-auto" style="width: 30px;border-radius: 10px;">
+                {{ x.count }}
+            </div>
+            <div>
+                <button class="btn btn-secondary mx-3" (click)="incrementCounter(i)">
+                    Increment
+                </button>
+                <button class="btn btn-secondary mx-3" (click)="decrementCounter(i)">
+                    Decrement
+                </button>
+                <button class="btn btn-danger mx-3" (click)="deleteCounter(i)">
+                    Delete
+                </button>
+            </div>
         </div>
     </div>
 </div>

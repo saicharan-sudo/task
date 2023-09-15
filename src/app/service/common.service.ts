@@ -47,6 +47,8 @@ export class CommonService {
     '&appid='+this.APIKey)
   }
   findUpComingFiveDaysWeather(country:CountryWeatherDto):Observable<CountryDaysWeatherDto>{
+    console.log(country);
+    
     // return this.http.get<CountryWeatherDto>(this.baseUrl + this.apiUrls.upComingFiveDaysWeather+country.name+'&cnt=3&appid='+this.APIKey)
     return this.http.get<CountryDaysWeatherDto>(this.baseUrl+this.apiUrls.sevenDays+country.coord.lat+'&lon='+country.coord.lon
     +'&exclude=current,hourly,minutely,alerts&units=metric&appid='+this.APIKey)

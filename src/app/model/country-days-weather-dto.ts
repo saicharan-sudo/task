@@ -27,6 +27,7 @@ export class CountryDaysWeatherDto {
     uvi: number
     rain?: number;
     convertedDate:string;
+    convertedDay:string;
   }
   
   export class Temp {
