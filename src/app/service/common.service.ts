@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Subject,BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { CountryDto } from '../model/country-dto';
 import { Observable, throwError } from 'rxjs';
@@ -31,7 +31,7 @@ export class CommonService {
     //=38.7267&lon=-9.1403
     //&exclude=current,hourly,minutely,alerts&units=metric&appid={API key}
   };
-  private $data = new Subject<CommunicationData>();
+  private $data = new BehaviorSubject<CommunicationData>({countLength:0});
 
   public dataReceivedEvent = this.$data.asObservable();
   public setDataToSend(data: CommunicationData): void {
