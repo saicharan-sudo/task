@@ -1,6 +1,6 @@
 {
     "/app": {
-      "target": "https://openweathermap.org/api",
+      "target": "https://api.openweathermap.org/",
       "secure": false,
       "pathRewrite": {
         "^/app": ""

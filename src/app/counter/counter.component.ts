@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CounterDto } from 'src/model/counter-dto';
+import { CounterDto } from 'src/app/model/counter-dto';
 import { CommonService } from '../service/common.service';
 
 @Component({
