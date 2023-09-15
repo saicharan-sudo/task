@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,OnDestroy } from '@angular/core';
 import { CounterDto } from 'src/app/model/counter-dto';
 import { CommonService } from '../service/common.service';
+import { ValidationUtils } from '../shared/Validators';
+import { LOCAL_STORAGE_KEYS, LocalStorageService } from '../service/local-storage.service';
 
 @Component({
   selector: 'app-counter',
@@ -9,11 +11,18 @@ import { CommonService } from '../service/common.service';
 })
 
 
-export class CounterComponent implements OnInit {
+export class CounterComponent implements OnInit,OnDestroy {
   counterList: CounterDto[] = [];
-  constructor(private _commonService: CommonService) { }
+  constructor(private _commonService: CommonService,private _localStorageService:LocalStorageService) { }
   ngOnInit(): void {
-
+    let counterList:CounterDto[]=[];
+    counterList = JSON.parse(this._localStorageService.getLocalStorage(LOCAL_STORAGE_KEYS.COUNTER));
+    if(ValidationUtils.isListExists(counterList)){
+      this.counterList = counterList;
+      setTimeout(() => {
+        this.sendData();
+      }, 100);
+    }
   }
   add() {
     let counter: CounterDto = new CounterDto();
@@ -47,5 +56,9 @@ export class CounterComponent implements OnInit {
       // data: window.location.pathname,
       countLength: this.counterList.length
     });
+  }
+  ngOnDestroy(): void {
+    this._localStorageService.setLocalStorage(LOCAL_STORAGE_KEYS.COUNTER,this.counterList)
+    // localStorage.setItem("counterRecords",JSON.stringify(this.counterList));
   }
 }

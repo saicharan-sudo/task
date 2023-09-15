@@ -1,51 +1,48 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,OnDestroy} from '@angular/core';
 import { CommonService } from '../service/common.service';
 import { CountryDto } from '../model/country-dto';
 import { CountryWeatherDto } from '../model/country-weather';
 import { CountryDaysWeatherDto } from '../model/country-days-weather-dto';
 import { ToastrService } from 'ngx-toastr';
 import { ValidationUtils } from '../shared/Validators';
+import { LOCAL_STORAGE_KEYS, LocalStorageService } from '../service/local-storage.service';
 
 @Component({
   selector: 'app-weather',
   templateUrl: './weather.component.html',
   styleUrls: ['./weather.component.scss']
 })
-export class WeatherComponent implements OnInit {
+export class WeatherComponent implements OnInit,OnDestroy {
 
   ngOnInit(): void {
-    let x: any[] = [];
-    x.unshift({ text: 'a' });
-    x.unshift({ text: 'b' });
-    x.unshift({ text: 'c' });
-    x.unshift({ text: 'd' });
-    x.unshift({ text: 'e' });
-    x.unshift({ text: 'f' });
-    x.unshift({ text: 'g' });
-    x.unshift({ text: 'h' });
-    if (x.length >= 8) {
-      x.splice(x.length - 1, 1);
-
-    } else {
-    }
-    x.unshift({ text: 'ab' });
-    console.log(x);
-
-    console.log(x.length);
+   let searchHistory: CountryWeatherDto[] = [];
+   let fiveDaysResponse: CountryDaysWeatherDto;
+   let activeIndex:number;
+   searchHistory = this._localStorageService.getLocalStorage(LOCAL_STORAGE_KEYS.WEATHER_SEARCH_HISTORY) ? JSON.parse(this._localStorageService.getLocalStorage(LOCAL_STORAGE_KEYS.WEATHER_SEARCH_HISTORY)):[];
+   fiveDaysResponse = this._localStorageService.getLocalStorage(LOCAL_STORAGE_KEYS.FORCAST_HISTORY) ? JSON.parse(this._localStorageService.getLocalStorage(LOCAL_STORAGE_KEYS.FORCAST_HISTORY)):null;
+   activeIndex = this._localStorageService.getLocalStorage(LOCAL_STORAGE_KEYS.ACTIVE_INDEX) ? JSON.parse(this._localStorageService.getLocalStorage(LOCAL_STORAGE_KEYS.ACTIVE_INDEX)):null;
+   this.searchHistory = searchHistory;
+   this.fiveDaysResponse = fiveDaysResponse;
+   this.activeIndex = activeIndex;  
 
   }
 
-  constructor(public _commonService: CommonService, private _toastrService: ToastrService) { }
+  constructor(public _commonService: CommonService, private _toastrService: ToastrService,
+    private _localStorageService:LocalStorageService
+    ) { }
   searchCountry: string;
   searchHistory: CountryWeatherDto[] = [];
   // wetherOfCountryData: CountryWeatherDto;
   fiveDaysResponse: CountryDaysWeatherDto;
   isLoading: boolean = false;
   searchCountryByName() {
-    let existed = this.searchHistory.findIndex(obj => obj.name.toLowerCase().trim() == this.searchCountry.toLowerCase().trim());
-    if (existed != -1) {
-      this._toastrService.show("entered city already exist", "Info");
-      return;
+    if(this.searchHistory?.length>0){
+      let existed = this.searchHistory.findIndex(obj => obj.name.toLowerCase().trim() == this.searchCountry.toLowerCase().trim());
+      if (existed != -1) {
+        this._toastrService.show("entered city already exist", "Info");
+        return;
+      }
+
     }
     if (ValidationUtils.isStringNull(this.searchCountry)) {
       this._toastrService.error("Please enter the country or city name to search", "Info");
@@ -60,11 +57,14 @@ export class WeatherComponent implements OnInit {
             wetherOfCountryData = res;
             wetherOfCountryData.calculatedCelcius = this._commonService.toCelsius(res.main.temp);
             // this.wetherOfCountryData = wetherOfCountryData;
-            if (this.searchHistory.length >= 8) {
+            this.searchHistory.unshift(wetherOfCountryData);
+            if (this.searchHistory?.length >= 8) {
               this.searchHistory.splice(this.searchHistory.length - 1, 1);
             }
-            this.searchHistory.unshift(wetherOfCountryData);
+            this.activeIndex=null;
+          this.fiveDaysResponse = null;
             this._toastrService.success("Records Found", "Success");
+            
           } else {
             this._toastrService.success("Something went wrong", "Info");
           }
@@ -174,6 +174,12 @@ export class WeatherComponent implements OnInit {
   }
   getConvertedFormatedDate(d:number){
     return new Date(d);
+  }
+  ngOnDestroy(): void {
+    this._localStorageService.setLocalStorage(LOCAL_STORAGE_KEYS.WEATHER_SEARCH_HISTORY,this.searchHistory);
+    this._localStorageService.setLocalStorage(LOCAL_STORAGE_KEYS.FORCAST_HISTORY,this.fiveDaysResponse);
+    this._localStorageService.setLocalStorage(LOCAL_STORAGE_KEYS.ACTIVE_INDEX,this.activeIndex);
+
   }
 }
 

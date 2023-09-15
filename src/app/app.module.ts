@@ -16,7 +16,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
     AppComponent,
     TopBarComponent,
     CounterComponent,
-    WeatherComponent
+    WeatherComponent,
   ],
   imports: [
     BrowserModule,
