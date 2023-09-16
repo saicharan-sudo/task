@@ -11,9 +11,7 @@ export class TopBarComponent implements OnInit, OnDestroy {
   constructor(private _commonService: CommonService) { }
   counterLength: number;
   ngOnInit(): void {
-
     if (this._commonService.dataReceivedEvent) {
-
       this.getData();
     }
   }

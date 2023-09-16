@@ -14,8 +14,7 @@ export class LocalStorageService {
 
   constructor() { }
   setLocalStorage(localstorageKey:LOCAL_STORAGE_KEYS,requestPayload){
-    if(requestPayload 
-    && !ValidationUtils.isStringNull(localstorageKey)){
+    if(requestPayload && !ValidationUtils.isStringNull(localstorageKey)){      
       localStorage.setItem(localstorageKey,JSON.stringify(requestPayload))
     }
   }

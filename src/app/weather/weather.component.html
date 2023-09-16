@@ -4,7 +4,6 @@
   <div class="col-lg-4 col-xl-3">
     <div class="card h-100">
       <div class="card-header p-2">
-
         <form class="form-inline my-2 my-lg-0" autocomplete="off">
           <input class="form-control mr-sm-2 flex-grow-1 border-top-0 border-left-0 border-right-0"
             [(ngModel)]="searchCountry" name="cityName" type="text" placeholder="Type City Name">
@@ -16,14 +15,13 @@
           </button>
         </form>
       </div>
-      <div class="card-body p-3" style="    height: calc(100vh - 30vh);
-      overflow-y: scroll;">
+      <div class="card-body p-3" style="    height: calc(100vh - 30vh);"
+        [ngClass]="searchHistory?.length>5 ?'overflow-auto':''">
         <ng-container *ngIf="searchHistory?.length>0">
           <p>Recent Location</p>
           <div *ngFor="let x of searchHistory;let i =index">
             <ul class="list-group">
-              <li class="list-group-item p-2 cursor-pointer mb-2" [class.active]="i == activeIndex"
-                >
+              <li class="list-group-item p-2 cursor-pointer mb-2" [class.active]="i == activeIndex">
                 <div class="d-flex align-items-center my-auto">
                   <div class="pointer" (click)="fetchWeatherHistoryOfFiveDays(x,i)">
                     {{ x.name }} -
@@ -32,7 +30,7 @@
                   </div>
                   <div class="ml-auto my-auto">
                     <div class="d-inline-flex">
-                      <button class="btn btn-default shadow-none bg-none" type="button"  (click)="refreshWeather(x,i)">
+                      <button class="btn btn-default shadow-none bg-none" type="button" (click)="refreshWeather(x,i)">
                         <h5 class="m-0">
                           <i class='bx bx-refresh'></i>
                         </h5>
@@ -44,20 +42,9 @@
                       </button>
                     </div>
                   </div>
-
                 </div>
               </li>
-
             </ul>
-
-
-            <!-- <button class="btn btn-info" (click)="fetchWeatherHistoryOfFiveDays(x)">
-              <p><span [class]="'ico-'+x.weather[0].icon" [title]="x.weather[0].icon"></span></p>
-  
-              {{ x.name }}
-              <img [src]="'http://openweathermap.org/img/w/'+x.weather[0].icon+'.png'" alt="">
-              {{ wetherOfCountryData?.calculatedCelcius | number:'1.0-1' }}°C
-            </button> -->
           </div>
         </ng-container>
 
@@ -68,77 +55,68 @@
     </div>
   </div>
   <div class="col-lg-8 col-xl-9">
-
-<div style="height: calc(100vh - 12vh);overflow-y: scroll;">
-
-  <!-- <form class="form-inline my-2 my-lg-0">
-    <input class="form-control mr-sm-2" name="search" [(ngModel)]="searchCountry" type="text" placeholder="Search">
-    <button class="btn btn-success my-2 my-sm-0" type="button" (click)="searchCountryByName()">Search</button>
-  </form> -->
-  <!-- {{searchCountry}} -->
-  <!-- <b>
-    find weather
-  </b>
-  khjjj -->
-  <!-- <p><span class="ico-01d" title="01d"></span></p>
-  <div *ngFor="let x of fiveDaysResponse.daily;let i =index">
-    <button class="btn btn-info" (click)="fetchWeatherHistoryOfFiveDays(x)">
-      <p><span [class]="'ico-'+x.weather[0].icon" [title]="x.weather[0].icon"></span></p>
-  
-      
-      <img [src]="'http://openweathermap.org/img/w/'+x.weather[0].icon+'.png'" alt="">
-      {{ wetherOfCountryData?.calculatedCelcius | number:'1.0-1' }}°C
-    </button>
-  </div> -->
-  
-  
-  <ng-container *ngIf="searchHistory?.length>0">
-  
-    
-    <ng-container *ngIf="fiveDaysResponse && fiveDaysResponse?.daily?.length>0&& !isLoading">
-      <div class="d-flex align-items-center justify-content-end my-auto">
-        <div>
-          {{searchHistory[activeIndex]?.name}}
-        </div>
-        <div class="ml-auto my-auto">
-          <div class="d-inline-flex">
-            <button class="btn btn-default shadow-none bg-none" 
-            (click)="fetchWeatherHistoryOfFiveDays(searchHistory[activeIndex],activeIndex)">
-              <h5 class="m-0">
-                <i class='bx bx-refresh'></i>
-              </h5>
-            </button>
-          </div>
-        </div>
-  
-      </div>
-      <div class="row">
-        <div class="col-4">
-          <img [src]="'http://openweathermap.org/img/w/'+searchHistory[activeIndex]?.weather[0]?.icon+'.png'"
-            alt="weather image" class="w-100">
-        </div>
-        <div class="col-8 text-left my-auto">
-          <div class="d-flex flex-column" style="gap: 10px;">
+    <div style="height: calc(100vh - 12vh);"
+      [ngClass]="fiveDaysResponse && fiveDaysResponse?.daily?.length>0?'overflow-auto':''">
+      <ng-container *ngIf="searchHistory?.length>0">
+        <ng-container *ngIf="fiveDaysResponse && fiveDaysResponse?.daily?.length>0&& !isLoading">
+          <div class="d-flex align-items-center justify-content-end my-auto">
             <div>
-              {{ searchHistory[activeIndex]?.calculatedCelcius | number:'1.0-1' }}°C
-  
-  
+              <h5>
+                {{searchHistory[activeIndex]?.name}}
+              </h5>
             </div>
-            <div>{{ searchHistory[activeIndex]?.weather[0]?.description }}</div>
-            <div>Wind: {{ searchHistory[activeIndex]?.wind?.speed }}ms {{ searchHistory[activeIndex]?.calculatedCelcius
-              }}deg </div>
-            <div>Pressure {{ searchHistory[activeIndex]?.main?.pressure }} </div>
+            <div class="ml-auto my-auto">
+              <div class="d-inline-flex">
+                <button class="btn btn-default shadow-none bg-none"
+                  (click)="fetchWeatherHistoryOfFiveDays(searchHistory[activeIndex],activeIndex)">
+                  <h5 class="m-0">
+                    <i class='bx bx-refresh'></i>
+                  </h5>
+                </button>
+              </div>
+            </div>
+
           </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-12 col-md-6 col-lg-4 col-xl-4 my-3" *ngFor="let x of fiveDaysResponse?.daily;let i =index">
-  
-  
-  
-  
-            
-          
+          <div class="row">
+            <div class="col-4">
+              <img [src]="'http://openweathermap.org/img/w/'+searchHistory[activeIndex]?.weather[0]?.icon+'.png'"
+                alt="weather image" class="w-100" style="height: 130px !important;object-fit: contain;">
+            </div>
+            <div class="col-8 text-left my-auto">
+              <div class="d-flex flex-column" style="gap: 10px;">
+                <div>
+                  <b>
+                    {{ searchHistory[activeIndex]?.calculatedCelcius | number:'1.0-1' }}°C
+                  </b>
+                </div>
+                <div>
+                  <b>
+                    {{ searchHistory[activeIndex]?.weather[0]?.description }}
+                  </b>
+                </div>
+                <div>
+                  <b>
+                    Wind:
+                    {{ searchHistory[activeIndex]?.wind?.speed }}ms {{ searchHistory[activeIndex]?.calculatedCelcius
+                    }}deg
+                  </b>
+                </div>
+                <div>
+                  <b>
+                    Pressure {{ searchHistory[activeIndex]?.main?.pressure }}
+                  </b>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-md-6 col-lg-4 col-xl-4 my-3" *ngFor="let x of fiveDaysResponse?.daily;let i =index">
+
+
+
+
+
+
               <div id="forecast">
                 <div class="forecast-day">
                   <div class="forecast-day-info">
@@ -146,22 +124,26 @@
                     <h4>{{ x.convertedDay }}</h4>
                   </div>
                   <img [src]="'http://openweathermap.org/img/w/'+x.weather[0].icon+'.png'" alt="">
-                  <p>{{ x.temp.day | number:'1.0-1' }}°C</p>
+                  <p>
+                    <b>
+                      {{ x.temp.day | number:'1.0-1' }}°C
+                    </b>
+                  </p>
                 </div>
               </div>
-        </div>
-      </div>
-  
-    </ng-container>
-    <ng-container *ngIf="!fiveDaysResponse||fiveDaysResponse?.daily?.length==0 && !isLoading">
-      <div class="card">
-        <div class="card-body m-auto ">
-          <p>Please Select atleast one location to view the upcoming forcase</p>
-        </div>
-      </div>
-    </ng-container>
-  </ng-container>
-</div>
+            </div>
+          </div>
+
+        </ng-container>
+        <ng-container *ngIf="!fiveDaysResponse||fiveDaysResponse?.daily?.length==0 && !isLoading">
+          <div class="card">
+            <div class="card-body m-auto ">
+              <p>Please Select a location to view the upcoming forcase</p>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+    </div>
 
   </div>
 </div>
